@@ -74,7 +74,12 @@ def guess_code_player(length):
         else:    
             for c in guess:
                 guess_lst.append(c)
-
+             '''
+                check if de guess is the same as the code
+                else generate feedback,
+                val1 is for the ammount of correctly placed collours
+                val2 if for th amount of correctly guessed collours
+             '''
             for i in range(length):
                 if guess_lst == code:
                     print("Gefeliciteerd u heeft het antwoord correct geraden")
