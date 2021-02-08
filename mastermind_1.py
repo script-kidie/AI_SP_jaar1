@@ -2,96 +2,70 @@
 # student = Bram van leusden
 # studentnummer = 1779320 
 
+# import library's 
 import random 
+import itertools
 
-# color values chars are in dutch 
+# ---- game functions and values ----- # 
+
+# color values 
 red = "R"
 blue = "B"
 green = "G"
 white = "W"
-orange = "O"
 purple = "P"
-black = "Z"
-silver= "S"
+orange = "O"
 
-color_lst = [red, blue, green, white, orange, purple, black, silver]
+color_lst = [red, blue, green, white, purple, orange]
 
-# asks player how many pins he/she wants in this round
-correctlenght = False
-while not correctlenght:
-    length = input("hoeveel pinetjes lang wilt u de code hebben (max 5 minimaal 1):")
-    try: length = int(length)
+# ask the player for the game type 
+game_type = int(input("als u zelf wilt raden kies typ '1'\nals u de computer wil laten raden typ '2'\n"))
 
-    except ValueError: 
-        print(f"Geef een valide aantwoord")
-        continue
 
-    if 1 >= length or length < 6:
-        correctlenght = True
-        break
-    else:
-        print("incorrect aantal")
-        continue
-
-# asks player how many different colors he/she wants in this round
-correctvariation = False   
-while not correctvariation:
-    variation = input("geef aan hoeveel vershillende kleuren pinnen u wilt(max 8 minimaal 1):")
-    try: variation = int(variation)
-    
-    except ValueError:
-        print("Geef een valide aantwoord")
-        continue
-
-    if 1 >= variation or variation < 9:
-        print(variation)
-        correctvariation = True
-        break
-    else:
-        print("incorrect aantal")
-        continue
-
-print(f"Er zijn {variation} verschillende kleuren deze kleuren kunnen zijn rood, blauw, groen, wit, oranje, paars, zwart en silver" 
+print(f"Er zijn 6 verschillende kleuren deze kleuren kunnen zijn rood, blauw, groen, wit, oranje en  paars" 
 f"\n geef voor rood een R"
 f"\n geef voor blauw een B"
 f"\n geef voor groen een G"
 f"\n geef voor wit een W"
 f"\n geef voor oranje een O" 
-f"\n geef voor paars een P"
-f"\n geef voor zwart een Z"
-f"\n geef voor silver een S")
+f"\n geef voor paars een P")
+
+length = 4
+variation = 6
 
 
-
-def generate_code(length, variation, color_lst):
+def generate_code(length, color_lst):
     """
-      generates a list with color code where the length and color variation is specified by the player
+      generates a list with a color code 
 
       @returns lst  
     """
     code = []
 
     for i in range(length):
-        x = random.randint(0, variation-1)
+        x = random.randint(0, 5)
         code.append(color_lst[x])
     return code 
 
 
-def guess_code(length, variation):
+def guess_code_player(length):
     """
-    asks the player to give a color combinations and depending on the players answers gives feedback.
+    asks the player to give a color combinations and gives feedback depending on the players answer.
 
-    @return True
+    @return no important returns 
     """
     answer = False
-    code = generate_code(length,variation,color_lst)
-    print(f"code={code}")
+    code = generate_code(length,color_lst)
+    black_lst = []
+    black_lst2 = []
+
     while not answer:
         x = 0
+        y = 0 
         val1 = 0
         val2 = 0
         guess_lst = []
-        guess = input(f"welke kleur combinatie denk je dat de geheime code is? (er zijn {length} pinnen en {variation} vershillende kleur(en)):")
+        guess = input(f"welke kleur combinatie denk je dat de geheime code is?")
         guess = guess.upper()
 
         if len(guess) != length:
@@ -107,17 +81,41 @@ def guess_code(length, variation):
                     answer = True
                     return True
                 elif guess_lst[x] == code[x]:
+                    black_lst.append(code[x])
                     val1 +=1
                     x += 1
-                    continue 
-                elif guess_lst[x] in code and guess_lst[x] != code[x]:
-                    val2 +=1
-                    x += 1 
                     continue
+                else: 
+                    x += 1
+                    continue
+                for i in range(length): 
+                    if (
+                    guess_lst[y] in code 
+                    and guess_lst[y] != code[y] 
+                    and black_lst.count(guess_lst[y]) < black_lst2.count(guess_lst[y]) 
+                    and black_lst2.count(guess_lst[y]) < code.count(guess_lst[y])
+                    ):
+                        black_lst2.append(guess_lst[y])
+                        val2 +=1
+                        y += 1 
+                        continue
+                    else: 
+                        black_lst2.append(guess_lst[y])
+                        y += 1 
+                        continue
 
-        print(f"Er zijn {val1} kleur(en) op de correcte plaats\n Er zijn {val2} kleur(en) juist maar op de verkeerde positie") 
+        print(f"Er zijn {val1} kleur(en) op de correcte plaats\nEr zijn {val2} kleur(en) juist maar op de verkeerde positie")
 
-
-    
-guess_code(length, variation)
+if game_type = 1: 
+    guess_code_player(length)
                  
+# ----- AI ----- #
+
+def generate_posibilities():
+    return(itertools.combinations(iterable, r))
+
+
+
+
+
+
