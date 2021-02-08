@@ -106,13 +106,13 @@ def guess_code_player(length):
 
         print(f"Er zijn {val1} kleur(en) op de correcte plaats\nEr zijn {val2} kleur(en) juist maar op de verkeerde positie")
 
-if game_type = 1: 
+if game_type == 1: 
     guess_code_player(length)
                  
 # ----- AI ----- #
 
 def generate_posibilities():
-    return(itertools.combinations(iterable, r))
+    return list(itertools.product(color_lst, repeat=4))
 
 
 
